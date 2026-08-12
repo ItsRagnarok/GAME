@@ -22,7 +22,16 @@ export function BuildMenu({ selected, onSelect, resources }) {
               isSelected ? 'bg-orange-500/30 ring-1 ring-orange-300' : 'hover:bg-white/10'
             } ${!affordable ? 'opacity-30' : ''}`}
           >
-            <span className="text-2xl">{def.icon}</span>
+            {def.image ? (
+              <img
+                src={def.image}
+                alt={def.name}
+                draggable={false}
+                className="h-8 w-8 select-none rounded object-cover"
+              />
+            ) : (
+              <span className="text-2xl">{def.icon}</span>
+            )}
             <span className="mt-1 whitespace-nowrap text-white/70">{def.name}</span>
             <span className="text-[10px] text-white/40">
               {Object.entries(def.cost)

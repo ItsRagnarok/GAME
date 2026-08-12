@@ -22,8 +22,9 @@ export const BUILDING_TYPES = {
   },
   tent: {
     id: 'tent',
-    name: 'Cort',
+    name: 'Adăpost S-01',
     icon: '⛺',
+    image: '/buildings/shelter.webp',
     cost: { wood: 10 },
     buildTicks: 2,
     produces: {},
@@ -34,6 +35,15 @@ export const BUILDING_TYPES = {
     icon: '🔧',
     cost: { wood: 20, coal: 10 },
     buildTicks: 4,
+    produces: {},
+  },
+  house: {
+    id: 'house',
+    name: 'Casă familială',
+    icon: '🏠',
+    image: '/buildings/house.webp',
+    cost: { wood: 25, coal: 5 },
+    buildTicks: 3,
     produces: {},
   },
 };
