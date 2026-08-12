@@ -1,4 +1,5 @@
 import { GENERATOR_POSITION } from '../../world/config/worldConfig';
+import { Smoke } from './Smoke';
 
 /**
  * The Generator: the heart of the hub, same role as in Frostpunk. Shows
@@ -45,7 +46,7 @@ export function Generator({ fueled }) {
           src="/generator/generator.webp"
           alt="Generator"
           draggable={false}
-          className="absolute select-none transition-[filter] duration-1000"
+          className={`absolute select-none transition-[filter] duration-1000 ${fueled ? 'frost-flicker' : ''}`}
           style={{
             left: '50%',
             top: '50%',
@@ -59,6 +60,12 @@ export function Generator({ fueled }) {
           }}
         />
       </div>
+      <Smoke
+        x={GENERATOR_POSITION.x - 4}
+        y={GENERATOR_POSITION.y - 108}
+        scale={2.3}
+        intensity={fueled ? 1 : 0.35}
+      />
     </>
   );
 }

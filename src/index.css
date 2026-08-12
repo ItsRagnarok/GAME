@@ -83,3 +83,35 @@ body,
   }
 }
 
+@keyframes frost-smoke-rise {
+  0% {
+    transform: translate(0, 0) scale(0.35);
+    opacity: 0;
+  }
+  12% {
+    opacity: 0.55;
+  }
+  100% {
+    transform: translate(var(--driftx, 20px), -150px) scale(1.7);
+    opacity: 0;
+  }
+}
+
+/* Subtle flicker on lit windows/embers baked into the building art —
+   reads as firelight moving, not a static painted-on glow. */
+@keyframes frost-ember-flicker {
+  0%,
+  100% {
+    filter: brightness(1) saturate(1);
+  }
+  45% {
+    filter: brightness(1.08) saturate(1.1);
+  }
+  55% {
+    filter: brightness(0.94) saturate(0.95);
+  }
+}
+.frost-flicker {
+  animation: frost-ember-flicker 3.4s ease-in-out infinite;
+}
+

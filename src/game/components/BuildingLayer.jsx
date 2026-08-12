@@ -1,5 +1,6 @@
 import { BUILDING_TYPES } from '../config/buildings';
 import { BUILDING_ICONS } from '../config/buildingIcons';
+import { Smoke } from './Smoke';
 
 export function BuildingLayer({ buildings }) {
   return (
@@ -33,7 +34,7 @@ export function BuildingLayer({ buildings }) {
                   src={def.image}
                   alt={def.name}
                   draggable={false}
-                  className="absolute select-none"
+                  className={`absolute select-none ${!underConstruction ? 'frost-flicker' : ''}`}
                   style={{
                     left: '50%',
                     top: '50%',
@@ -68,6 +69,9 @@ export function BuildingLayer({ buildings }) {
           </div>
         );
       })}
+      {buildings
+        .filter((b) => b.status === 'active' && BUILDING_TYPES[b.type].image)
+        .map((b) => <Smoke key={`smoke-${b.id}`} x={b.x - 20} y={b.y - 85} scale={1.5} />)}
     </>
   );
 }

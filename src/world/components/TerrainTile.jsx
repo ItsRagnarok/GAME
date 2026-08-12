@@ -28,6 +28,7 @@ export function TerrainTile({ zone }) {
           draggable={false}
           onError={() => setFailed(true)}
           className="h-full w-full object-cover select-none"
+          style={{ filter: 'saturate(0.72) brightness(0.62) contrast(1.05) sepia(0.08) hue-rotate(180deg)' }}
         />
       ) : (
         <div
@@ -44,7 +45,7 @@ export function TerrainTile({ zone }) {
 
       {/* soft inner shadow so every tile blends into its neighbors instead
           of reading as a hard-edged image */}
-      <div className="pointer-events-none absolute inset-0 shadow-[inset_0_0_140px_70px_rgba(5,8,12,0.4)]" />
+      <div className="pointer-events-none absolute inset-0 shadow-[inset_0_0_180px_90px_rgba(5,8,12,0.55)]" />
     </div>
   );
 }

@@ -4,6 +4,7 @@ import { useWorldCamera } from '../hooks/useWorldCamera';
 import { TerrainTile } from './TerrainTile';
 import { DeepZoomLayer } from './DeepZoomLayer';
 import { ZoneSeams } from './ZoneSeams';
+import { FrontierFog } from './FrontierFog';
 import { Hud } from './Hud';
 import { FullscreenButton } from './FullscreenButton';
 import { SnowOverlay } from './SnowOverlay';
@@ -42,6 +43,12 @@ export function WorldMap() {
 
   const { viewportRef, worldRef, cameraRef } = useWorldCamera({ onTap: handleTap });
 
+  // Real day/night cycle driven by the simulation clock (game.hour),
+  // not a decorative loop: 1 at midnight, 0 at noon, smoothly in between.
+  // The 1.8s transition matches the ~2s tick so each hour crossfades
+  // instead of jump-cutting.
+  const nightFactor = 0.5 + 0.5 * Math.cos((game.hour / 24) * Math.PI * 2);
+
   return (
     <div ref={viewportRef} className="relative h-full w-full cursor-grab touch-none bg-[#05070a] active:cursor-grabbing">
       <div
@@ -66,6 +73,7 @@ export function WorldMap() {
           viewportRef={viewportRef}
         />
         <ZoneSeams />
+        <FrontierFog />
         <GameLayer game={game} />
       </div>
 
@@ -73,6 +81,10 @@ export function WorldMap() {
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[#0a1420]/25 via-transparent to-[#05070a]/55" />
       <div className="pointer-events-none absolute inset-0 [background:radial-gradient(120%_100%_at_50%_40%,transparent_55%,rgba(3,5,8,0.55)_100%)]" />
       <div className="pointer-events-none absolute inset-0 opacity-[0.05] mix-blend-overlay [background-image:url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22120%22 height=%22120%22><filter id=%22n%22><feTurbulence type=%22fractalNoise%22 baseFrequency=%220.9%22 numOctaves=%222%22 stitchTiles=%22stitch%22/></filter><rect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23n)%22/></svg>')]" />
+      <div
+        className="pointer-events-none absolute inset-0 bg-[#040814] transition-opacity duration-[1800ms] ease-linear"
+        style={{ opacity: nightFactor * 0.5 }}
+      />
       <SnowOverlay />
 
       <ResourceBar game={game} />
