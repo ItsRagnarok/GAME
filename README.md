@@ -8,17 +8,22 @@ curg în timp, și expediții spre 9 zone din jur.
 
 - Hub central ("harta principală"), cu **Generator** la mijloc și rază
   de căldură vizibilă.
-- 4 clădiri plasabile (mină de cărbune, gater, cort, atelier) — click în
-  meniul de jos, apoi click pe hartă lângă generator. Se construiesc
-  vizibil (progres), apoi produc resurse pe tură.
+- 5 clădiri plasabile (mină de cărbune, gater, adăpost, atelier, casă
+  familială) — click în meniul de jos, apoi click pe hartă lângă
+  generator. Se construiesc vizibil (progres), apoi produc resurse pe
+  tură.
 - Simulare reală: ziua/ora, temperatura, cărbune/lemn — tick la ~2s.
+  Ciclul zi/noapte al hărții e legat de ceasul real al simulării.
 - Celelalte 9 zone sunt clickabile → panou de expediție (cost lemn,
   recompensă cărbune/lemn după câteva ture).
 - Cameră liberă: pan + zoom (WASD/săgeți, click+drag, scroll pe PC;
   drag + pinch pe telefon), fullscreen, HUD minimal.
-- Harta principală se randează ca **piramidă de tile-uri** (tehnica de
-  la Google Maps), dintr-o singură imagine sursă de 6144×4096px — clară
-  la orice nivel de zoom, nu o poză întinsă/blurată. Vezi `DEEP_ZOOM.md`.
+- Harta și toate clădirile sunt **artă vectorială desenată în cod**
+  (`src/world/art/`, `src/game/art/`) — nu poze, deci nicio dependență
+  de imagini externe, nicio problemă de încărcare, și claritate perfectă
+  la orice nivel de zoom. Toate zonele împart aceeași paletă și aceeași
+  sursă de lumină (jarul generatorului), ca lumea să pară un întreg, nu
+  bucăți puse cap la cap.
 
 ## Structură
 
@@ -28,27 +33,23 @@ src/
     config/worldConfig.js     # zonele lumii, hub-ul principal, poziția generatorului
     hooks/useWorldCamera.js   # motorul camerei: pan/zoom/inerție/clamp/tap-detection
     hooks/useFullscreen.js
+    art/
+      HubMap.jsx              # arta vectorială a hub-ului central (crater, munți, drumuri)
+      ZoneArt.jsx             # arta vectorială a celor 9 zone exterioare
     components/
       WorldMap.jsx            # compune totul: teren + joc + UI
-      DeepZoomLayer.jsx        # piramidă de tile-uri pentru hub-ul principal
-      TerrainTile.jsx         # tile plat pentru cele 9 zone exterioare
+      TerrainTile.jsx         # randează arta zonei potrivite pentru fiecare tile
       ZoneSeams.jsx           # ceață pe marginile comune dintre zone
-      Hud.jsx / FullscreenButton.jsx
+      FrontierFog.jsx         # ceață radială peste frontieră, centrată pe hub
+      Hud.jsx / FullscreenButton.jsx / SnowOverlay.jsx
   game/
     state/gameStore.js         # store extern minimal (resurse, timp, clădiri, expediții)
     logic/simulation.js        # tick-ul jocului, plasare clădiri, expediții
     config/buildings.js        # tipurile de clădiri (cost/producție)
-    components/                # Generator, BuildingLayer, ResourceBar, BuildMenu, ExpeditionPanel
+    art/BuildingArt.jsx        # arta vectorială a celor 6 clădiri
+    components/                # Generator, BuildingLayer, Smoke, ResourceBar, BuildMenu, ExpeditionPanel
   App.jsx
-scripts/
-  generate_deep_zoom.py       # taie o imagine mare în piramidă de tile-uri
 ```
-
-## Imaginile de teren
-
-Cele 9 zone exterioare sunt în `public/tiles/` — vezi `public/tiles/
-README.md`. Harta principală e în `public/deep-map/` (piramidă de
-tile-uri, generată din `assets/source-maps/`) — vezi `DEEP_ZOOM.md`.
 
 ## Rulare locală
 

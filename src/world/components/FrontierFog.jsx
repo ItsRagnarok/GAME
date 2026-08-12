@@ -6,8 +6,8 @@ import { GENERATOR_POSITION } from '../config/worldConfig';
 // world space, centered on the hub, that thickens with distance. It's
 // what actually hides the "9 separate stock photos" seam that survives
 // at low zoom no matter how well the tile edges are blended.
-const CLEAR_RADIUS = 2700; // hub stays fully readable within this
-const FADE_RADIUS = 5600; // by here the haze is at its max
+const CLEAR_RADIUS = 2500; // hub stays fully readable within this
+const FADE_RADIUS = 5400; // by here the haze is at its max
 const MAX_FOG = 'rgba(8,13,20,0.72)';
 
 export function FrontierFog() {

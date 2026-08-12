@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { ZONES, MAIN_ZONE, WORLD_WIDTH, WORLD_HEIGHT, findZoneAt } from '../config/worldConfig';
 import { useWorldCamera } from '../hooks/useWorldCamera';
 import { TerrainTile } from './TerrainTile';
-import { DeepZoomLayer } from './DeepZoomLayer';
+import { HubMap } from '../art/HubMap';
 import { ZoneSeams } from './ZoneSeams';
 import { FrontierFog } from './FrontierFog';
 import { Hud } from './Hud';
@@ -59,19 +59,9 @@ export function WorldMap() {
         {ZONES.map((zone) =>
           zone.id === 'main' ? null : <TerrainTile key={zone.id} zone={zone} />,
         )}
-        {/* Main hub renders as a tile pyramid (see public/deep-map + scripts/
-            generate_deep_zoom.py) instead of one flat image, so it stays
-            sharp at any zoom instead of one fixed-resolution <img> stretching
-            blurrily across the whole hub. */}
-        <DeepZoomLayer
-          baseUrl="/deep-map"
-          worldX={MAIN_ZONE.x}
-          worldY={MAIN_ZONE.y}
-          worldWidth={MAIN_ZONE.width}
-          worldHeight={MAIN_ZONE.height}
-          cameraRef={cameraRef}
-          viewportRef={viewportRef}
-        />
+        {/* Main hub is hand-authored vector art (src/world/art/HubMap.jsx),
+            not a photo — crisp at any zoom with no tiles or load state. */}
+        <HubMap x={MAIN_ZONE.x} y={MAIN_ZONE.y} width={MAIN_ZONE.width} height={MAIN_ZONE.height} />
         <ZoneSeams />
         <FrontierFog />
         <GameLayer game={game} />

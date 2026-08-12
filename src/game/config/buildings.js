@@ -2,12 +2,12 @@
 // (see logic/simulation.js) construction takes before a building goes
 // from "building" (dashed, translucent) to "active" and starts
 // producing. `produces` is added to resources every tick once active.
+// Visuals live in src/game/art/BuildingArt.jsx, keyed by `id`.
 
 export const BUILDING_TYPES = {
   coalMine: {
     id: 'coalMine',
     name: 'Mină de cărbune',
-    icon: '⛏️',
     cost: { wood: 15 },
     buildTicks: 3,
     produces: { coal: 1 },
@@ -15,7 +15,6 @@ export const BUILDING_TYPES = {
   sawmill: {
     id: 'sawmill',
     name: 'Gater',
-    icon: '🪚',
     cost: { coal: 10 },
     buildTicks: 3,
     produces: { wood: 1 },
@@ -23,8 +22,6 @@ export const BUILDING_TYPES = {
   tent: {
     id: 'tent',
     name: 'Adăpost S-01',
-    icon: '⛺',
-    image: '/buildings/shelter.webp',
     cost: { wood: 10 },
     buildTicks: 2,
     produces: {},
@@ -32,7 +29,6 @@ export const BUILDING_TYPES = {
   workshop: {
     id: 'workshop',
     name: 'Atelier',
-    icon: '🔧',
     cost: { wood: 20, coal: 10 },
     buildTicks: 4,
     produces: {},
@@ -40,8 +36,6 @@ export const BUILDING_TYPES = {
   house: {
     id: 'house',
     name: 'Casă familială',
-    icon: '🏠',
-    image: '/buildings/house.webp',
     cost: { wood: 25, coal: 5 },
     buildTicks: 3,
     produces: {},

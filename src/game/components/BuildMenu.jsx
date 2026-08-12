@@ -1,5 +1,5 @@
 import { BUILDING_TYPES } from '../config/buildings';
-import { BUILDING_ICONS } from '../config/buildingIcons';
+import { BUILDING_ART } from '../art/BuildingArt';
 import { IconCoal, IconWood } from './icons';
 
 const COST_ICONS = { coal: IconCoal, wood: IconWood };
@@ -13,7 +13,7 @@ export function BuildMenu({ selected, onSelect, resources }) {
       {Object.values(BUILDING_TYPES).map((def) => {
         const affordable = Object.entries(def.cost).every(([key, amount]) => (resources[key] || 0) >= amount);
         const isSelected = selected === def.id;
-        const FallbackIcon = BUILDING_ICONS[def.id];
+        const Art = BUILDING_ART[def.id];
 
         return (
           <button
@@ -25,19 +25,7 @@ export function BuildMenu({ selected, onSelect, resources }) {
               isSelected ? 'bg-orange-500/25 ring-1 ring-orange-300/70' : 'hover:bg-white/[0.06]'
             } ${!affordable ? 'opacity-30' : ''}`}
           >
-            {def.image ? (
-              <img
-                src={def.image}
-                alt={def.name}
-                draggable={false}
-                className="h-8 w-8 select-none rounded object-cover"
-                style={{ filter: 'saturate(0.9) contrast(1.05)' }}
-              />
-            ) : (
-              <span className="flex h-8 w-8 items-center justify-center text-orange-200/80">
-                {FallbackIcon ? <FallbackIcon width={22} height={22} /> : null}
-              </span>
-            )}
+            <span className="h-8 w-8">{Art && <Art />}</span>
             <span className="frost-label mt-1.5 whitespace-nowrap text-[10px] text-white/70">{def.name}</span>
             <span className="mt-0.5 flex items-center gap-1.5 text-[10px] text-white/40">
               {Object.entries(def.cost).map(([key, amount]) => {

@@ -1,10 +1,15 @@
 import { GENERATOR_POSITION } from '../../world/config/worldConfig';
 import { Smoke } from './Smoke';
+import { BUILDING_ART } from '../art/BuildingArt';
+
+const GeneratorArt = BUILDING_ART.generator;
 
 /**
  * The Generator: the heart of the hub, same role as in Frostpunk. Shows
  * a warmth ring so it's visually obvious why buildings cluster around
- * it, and dims when out of coal.
+ * it, and dims when out of coal. Rendered as hand-drawn vector art
+ * (src/game/art/BuildingArt.jsx), not a photo — no mask needed, it's
+ * already transparent outside the shape.
  */
 export function Generator({ fueled }) {
   const size = 260;
@@ -42,27 +47,20 @@ export function Generator({ fueled }) {
           className="absolute rounded-full bg-black/45 blur-md"
           style={{ left: '50%', top: '78%', width: size * 0.5, height: size * 0.14, transform: 'translate(-50%, -50%)' }}
         />
-        <img
-          src="/generator/generator.webp"
-          alt="Generator"
-          draggable={false}
-          className={`absolute select-none transition-[filter] duration-1000 ${fueled ? 'frost-flicker' : ''}`}
+        <div
+          className={`absolute inset-0 transition-[filter] duration-1000 ${fueled ? 'frost-flicker' : ''}`}
           style={{
-            left: '50%',
-            top: '50%',
-            width: size * 1.35,
-            transform: 'translate(-50%, -50%)',
-            maskImage: 'radial-gradient(ellipse, black 52%, transparent 82%)',
-            WebkitMaskImage: 'radial-gradient(ellipse, black 52%, transparent 82%)',
             filter: fueled
-              ? 'drop-shadow(0 0 26px rgba(255,140,20,0.55)) saturate(1.05) contrast(1.05) brightness(1.02)'
-              : 'drop-shadow(0 0 14px rgba(0,0,0,0.5)) saturate(0.85) contrast(1.05) brightness(0.82)',
+              ? 'drop-shadow(0 0 26px rgba(255,140,20,0.55))'
+              : 'drop-shadow(0 0 10px rgba(0,0,0,0.4)) saturate(0.7) brightness(0.78)',
           }}
-        />
+        >
+          <GeneratorArt />
+        </div>
       </div>
       <Smoke
-        x={GENERATOR_POSITION.x - 4}
-        y={GENERATOR_POSITION.y - 108}
+        x={GENERATOR_POSITION.x - 8}
+        y={GENERATOR_POSITION.y - 91}
         scale={2.3}
         intensity={fueled ? 1 : 0.35}
       />

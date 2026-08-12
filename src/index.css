@@ -115,3 +115,54 @@ body,
   animation: frost-ember-flicker 3.4s ease-in-out infinite;
 }
 
+/* Per-window flicker used inside the hand-drawn building SVGs
+   (src/game/art/BuildingArt.jsx) — each lit window pulses on its own
+   offset so a row of windows doesn't blink in unison. */
+@keyframes frost-window-flicker {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.72;
+  }
+}
+.lit {
+  animation: frost-window-flicker 3.2s ease-in-out infinite;
+}
+.lit-2 {
+  animation-delay: 0.9s;
+}
+.lit-3 {
+  animation-delay: 1.8s;
+}
+
+/* Ambient background smoke baked directly into some zone art (the
+   volcanic vent, the industrial smokestacks) — simpler than the
+   world-space <Smoke> component since it doesn't need to track a
+   moving building, just drift in place. */
+.smoke {
+  fill: #cfd9e0;
+  opacity: 0;
+  animation: frost-bg-smoke-rise 4s ease-out infinite;
+}
+.smoke.s2 {
+  animation-delay: 1.3s;
+}
+.smoke.s3 {
+  animation-delay: 2.6s;
+}
+@keyframes frost-bg-smoke-rise {
+  0% {
+    opacity: 0;
+    transform: translateY(0) scale(0.6);
+  }
+  18% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-30px) scale(1.6);
+  }
+}
+
