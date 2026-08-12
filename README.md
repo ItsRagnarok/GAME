@@ -36,11 +36,12 @@ Codul e organizat modular special ca peste el să se poată adăuga ulterior,
 fără să se rescrie fundația: clădiri, personaje, resurse, vreme,
 evenimente, AI, multiplayer, UI, salvare.
 
-## Unde pui cele 10 imagini
+## Imaginile de teren
 
-În `public/tiles/`, redenumite `01.jpg` … `10.jpg` (detalii și mapare în
-`public/tiles/README.md`). Până le adaugi, fiecare zonă arată un
-placeholder colorat cu numele ei — harta e complet navigabilă oricum.
+Sunt deja în `public/tiles/` (`01.jpg` … `10.jpg`, aduse din Drive și
+optimizate pentru web — vezi `public/tiles/README.md` pentru mapare).
+Dacă vreun fișier lipsește, zona respectivă revine automat la un
+placeholder colorat cu numele ei, ca harta să rămână navigabilă oricum.
 
 ## Rulare locală
 

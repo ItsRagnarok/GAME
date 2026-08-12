@@ -1,6 +1,7 @@
 import { ZONES, WORLD_WIDTH, WORLD_HEIGHT } from '../config/worldConfig';
 import { useWorldCamera } from '../hooks/useWorldCamera';
 import { TerrainTile } from './TerrainTile';
+import { ZoneSeams } from './ZoneSeams';
 import { Hud } from './Hud';
 import { FullscreenButton } from './FullscreenButton';
 
@@ -17,6 +18,7 @@ export function WorldMap() {
         {ZONES.map((zone) => (
           <TerrainTile key={zone.id} zone={zone} />
         ))}
+        <ZoneSeams />
       </div>
 
       {/* Cinematic cold atmosphere — fixed to the viewport, never transformed. */}

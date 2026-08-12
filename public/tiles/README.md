@@ -1,6 +1,7 @@
 # Imagini de teren
 
-Pune aici cele 10 imagini de teren, redenumite exact așa:
+Cele 10 imagini sunt deja aici (aduse din Drive, optimizate ca `.jpg`
+~0.45-0.55MB fiecare, din originalele `.png` de ~3.7MB). Maparea:
 
 | Fișier   | Zonă                             |
 | -------- | --------------------------------- |
@@ -15,11 +16,7 @@ Pune aici cele 10 imagini de teren, redenumite exact așa:
 | `09.jpg` | Ghețar                            |
 | `10.jpg` | Zonă vulcanică înghețată          |
 
-Format recomandat: `.jpg`, ideal pătrate (ex. 2048×2048px), sub ~1–2MB
-fiecare pentru încărcare rapidă în browser.
-
-Până sunt adăugate, fiecare zonă afișează automat un placeholder colorat
-cu numele ei, ca să poți testa harta și navigarea oricum.
-
-Dacă vrei alt format (`.png`/`.webp`) sau alte nume, actualizează câmpul
-`file` din `src/world/config/worldConfig.js`.
+Dacă înlocuiești vreo imagine, păstrează numele (`01.jpg` … `10.jpg`) sau
+actualizează câmpul `file` din `src/world/config/worldConfig.js`. Dacă un
+fișier lipsește temporar, zona respectivă revine automat la un
+placeholder colorat cu numele ei, ca harta să rămână navigabilă.
