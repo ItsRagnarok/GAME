@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { ZONES, WORLD_WIDTH, WORLD_HEIGHT, findZoneAt } from '../config/worldConfig';
 import { useWorldCamera } from '../hooks/useWorldCamera';
 import { TerrainTile } from './TerrainTile';
+import { DeepZoomLayer } from './DeepZoomLayer';
 import { ZoneSeams } from './ZoneSeams';
 import { Hud } from './Hud';
 import { FullscreenButton } from './FullscreenButton';
@@ -47,9 +48,23 @@ export function WorldMap() {
         className="absolute left-0 top-0 origin-top-left will-change-transform"
         style={{ width: WORLD_WIDTH, height: WORLD_HEIGHT }}
       >
-        {ZONES.map((zone) => (
-          <TerrainTile key={zone.id} zone={zone} />
-        ))}
+        {ZONES.map((zone) =>
+          zone.id === 'main' ? null : <TerrainTile key={zone.id} zone={zone} />,
+        )}
+        {/* Main hub renders as a tile pyramid (see public/deep-map + scripts/
+            generate_deep_zoom.py) instead of one flat image, so it stays
+            sharp at any zoom. Currently built from tiles/01.jpg as a
+            placeholder — swap in a much larger single seamless source image
+            and re-run the script for real quality. */}
+        <DeepZoomLayer
+          baseUrl="/deep-map"
+          worldX={0}
+          worldY={0}
+          worldWidth={4000}
+          worldHeight={4000}
+          cameraRef={cameraRef}
+          viewportRef={viewportRef}
+        />
         <ZoneSeams />
         <GameLayer game={game} />
       </div>

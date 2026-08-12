@@ -1,47 +1,56 @@
-# Frostpunk-style — Prototip de lume
+# Frostpunk-style
 
-Prototip vizual/tehnic pentru un survival city-builder cooperativ
-într-o lume înghețată. **Nu conține încă mecanici de joc** — doar
-fundația: o hartă mare, explorabilă, cu cameră liberă, gata de extins.
+Prototip jucabil pentru un survival city-builder cooperativ într-o lume
+înghețată: hub central cu Generator, clădiri plasabile, resurse care
+curg în timp, și expediții spre 9 zone din jur.
 
 ## Ce face prototipul
 
-- Lume de 10.000 × 4.000 unități, formată din 10 zone/tile-uri (2000×2000
-  fiecare) aranjate într-o grilă 5×2 continuă.
-- Cameră liberă: pan + zoom, cu limite la marginea lumii.
-- Controale PC: `WASD`/săgeți, click+drag, scroll pentru zoom.
-- Controale telefon: drag cu un deget, pinch-to-zoom.
-- Buton fullscreen (colț dreapta-sus).
-- HUD minimal (colț stânga-jos): nivel de zoom + poziție aproximativă
-  ("sector") a camerei.
-- Atmosferă rece: vinietă, ceață discretă, tranziții line între zone.
+- Hub central ("harta principală") de 4000×4000 unități, cu **Generator**
+  la mijloc și rază de căldură vizibilă.
+- 4 clădiri plasabile (mină de cărbune, gater, cort, atelier) — click în
+  meniul de jos, apoi click pe hartă lângă generator. Se construiesc
+  vizibil (progres), apoi produc resurse pe tură.
+- Simulare reală: ziua/ora, temperatura, cărbune/lemn — tick la ~2s.
+- Celelalte 9 zone sunt clickabile → panou de expediție (cost lemn,
+  recompensă cărbune/lemn după câteva ture).
+- Cameră liberă: pan + zoom (WASD/săgeți, click+drag, scroll pe PC;
+  drag + pinch pe telefon), fullscreen, HUD minimal.
+- Harta principală se randează ca **piramidă de tile-uri** (tehnica de
+  la Google Maps), nu ca o singură poză întinsă — vezi `DEEP_ZOOM.md`
+  pentru cum aducem o imagine unică, de rezoluție mare, în loc de
+  placeholder-ul curent.
 
 ## Structură
 
 ```
 src/
   world/
-    config/worldConfig.js     # grila de zone, dimensiuni, limite de zoom
-    hooks/useWorldCamera.js   # motorul camerei: pan/zoom/inerție/clamp
+    config/worldConfig.js     # zonele lumii, hub-ul principal, poziția generatorului
+    hooks/useWorldCamera.js   # motorul camerei: pan/zoom/inerție/clamp/tap-detection
     hooks/useFullscreen.js
     components/
-      WorldMap.jsx            # viewport + lumea transformată + atmosferă
-      TerrainTile.jsx         # un tile de teren (+ fallback dacă lipsește imaginea)
-      Hud.jsx
-      FullscreenButton.jsx
+      WorldMap.jsx            # compune totul: teren + joc + UI
+      DeepZoomLayer.jsx        # piramidă de tile-uri pentru hub-ul principal
+      TerrainTile.jsx         # tile plat pentru cele 9 zone exterioare
+      ZoneSeams.jsx           # ceață pe marginile comune dintre zone
+      Hud.jsx / FullscreenButton.jsx
+  game/
+    state/gameStore.js         # store extern minimal (resurse, timp, clădiri, expediții)
+    logic/simulation.js        # tick-ul jocului, plasare clădiri, expediții
+    config/buildings.js        # tipurile de clădiri (cost/producție)
+    components/                # Generator, BuildingLayer, ResourceBar, BuildMenu, ExpeditionPanel
   App.jsx
+scripts/
+  generate_deep_zoom.py       # taie o imagine mare în piramidă de tile-uri
 ```
-
-Codul e organizat modular special ca peste el să se poată adăuga ulterior,
-fără să se rescrie fundația: clădiri, personaje, resurse, vreme,
-evenimente, AI, multiplayer, UI, salvare.
 
 ## Imaginile de teren
 
-Sunt deja în `public/tiles/` (`01.jpg` … `10.jpg`, aduse din Drive și
-optimizate pentru web — vezi `public/tiles/README.md` pentru mapare).
-Dacă vreun fișier lipsește, zona respectivă revine automat la un
-placeholder colorat cu numele ei, ca harta să rămână navigabilă oricum.
+Cele 9 zone exterioare sunt în `public/tiles/` — vezi `public/tiles/
+README.md`. Harta principală e în `public/deep-map/` (piramidă de
+tile-uri) — vezi `DEEP_ZOOM.md` pentru cum o înlocuim cu o imagine unică
+de calitate.
 
 ## Rulare locală
 
