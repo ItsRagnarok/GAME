@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import { TILE_SIZE } from '../config/worldConfig';
 
 /**
  * Single world tile. Renders the zone's terrain image when present in
  * /public/tiles, and falls back to a themed gradient placeholder (with
  * the zone name) so the world still reads correctly before real art is
- * dropped in.
+ * dropped in. Zones aren't a uniform grid — each has its own x/y/width/
+ * height, so the "main" hub can be larger than the surrounding zones.
  */
 export function TerrainTile({ zone }) {
   const [failed, setFailed] = useState(false);
@@ -15,10 +15,10 @@ export function TerrainTile({ zone }) {
     <div
       className="absolute overflow-hidden"
       style={{
-        left: zone.col * TILE_SIZE,
-        top: zone.row * TILE_SIZE,
-        width: TILE_SIZE,
-        height: TILE_SIZE,
+        left: zone.x,
+        top: zone.y,
+        width: zone.width,
+        height: zone.height,
       }}
     >
       {!failed ? (

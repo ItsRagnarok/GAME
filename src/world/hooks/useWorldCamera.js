@@ -5,6 +5,7 @@ import {
   MIN_ZOOM,
   MAX_ZOOM,
   DEFAULT_ZOOM,
+  DEFAULT_CAMERA,
 } from '../config/worldConfig';
 
 const KEY_VECTORS = {
@@ -39,8 +40,8 @@ export function useWorldCamera() {
   const worldRef = useRef(null);
 
   const cameraRef = useRef({
-    x: WORLD_WIDTH / 2,
-    y: WORLD_HEIGHT / 2,
+    x: DEFAULT_CAMERA.x,
+    y: DEFAULT_CAMERA.y,
     zoom: DEFAULT_ZOOM,
   });
 
