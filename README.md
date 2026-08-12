@@ -6,8 +6,8 @@ curg în timp, și expediții spre 9 zone din jur.
 
 ## Ce face prototipul
 
-- Hub central ("harta principală") de 4000×4000 unități, cu **Generator**
-  la mijloc și rază de căldură vizibilă.
+- Hub central ("harta principală"), cu **Generator** la mijloc și rază
+  de căldură vizibilă.
 - 4 clădiri plasabile (mină de cărbune, gater, cort, atelier) — click în
   meniul de jos, apoi click pe hartă lângă generator. Se construiesc
   vizibil (progres), apoi produc resurse pe tură.
@@ -17,9 +17,8 @@ curg în timp, și expediții spre 9 zone din jur.
 - Cameră liberă: pan + zoom (WASD/săgeți, click+drag, scroll pe PC;
   drag + pinch pe telefon), fullscreen, HUD minimal.
 - Harta principală se randează ca **piramidă de tile-uri** (tehnica de
-  la Google Maps), nu ca o singură poză întinsă — vezi `DEEP_ZOOM.md`
-  pentru cum aducem o imagine unică, de rezoluție mare, în loc de
-  placeholder-ul curent.
+  la Google Maps), dintr-o singură imagine sursă de 6144×4096px — clară
+  la orice nivel de zoom, nu o poză întinsă/blurată. Vezi `DEEP_ZOOM.md`.
 
 ## Structură
 
@@ -49,8 +48,7 @@ scripts/
 
 Cele 9 zone exterioare sunt în `public/tiles/` — vezi `public/tiles/
 README.md`. Harta principală e în `public/deep-map/` (piramidă de
-tile-uri) — vezi `DEEP_ZOOM.md` pentru cum o înlocuim cu o imagine unică
-de calitate.
+tile-uri, generată din `assets/source-maps/`) — vezi `DEEP_ZOOM.md`.
 
 ## Rulare locală
 

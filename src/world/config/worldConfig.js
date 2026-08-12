@@ -9,8 +9,14 @@
 
 export const UNIT = 2000; // one grid unit, in world px
 
+// The main hub's footprint matches the real source image's aspect ratio
+// (harta_upscaled_x4.jpg, 6144x4096 = 3:2) so DeepZoomLayer never has to
+// stretch it — width stays a clean 2 units, height is derived.
+const MAIN_WIDTH = UNIT * 2;
+const MAIN_HEIGHT = Math.round(MAIN_WIDTH * (4096 / 6144));
+
 export const WORLD_WIDTH = UNIT * 5; // 10000
-export const WORLD_HEIGHT = UNIT * 3; // 6000
+export const WORLD_HEIGHT = MAIN_HEIGHT + UNIT * 2;
 
 export const MIN_ZOOM = 0.3;
 export const MAX_ZOOM = 3.2;
@@ -18,21 +24,22 @@ export const DEFAULT_ZOOM = 0.6;
 
 // Camera starts centered on the main hub, not the geometric world center,
 // so the primary map is what you see first.
-export const DEFAULT_CAMERA = { x: UNIT, y: UNIT };
+export const DEFAULT_CAMERA = { x: UNIT, y: MAIN_HEIGHT / 2 };
 
-//   [            MAIN (2x2)             ] mountains  forest      industrial
-//   [            MAIN (2x2)             ] lake       ruins       volcanic
+//   [       MAIN (2 units wide)         ] mountains  forest      industrial
+//   [   height matches source aspect    ] lake       ruins       volcanic
 //    glacier      river       crater       ·          ·           ·
 export const ZONES = [
   {
     id: 'main',
     order: '01',
     name: 'Teren înghețat principal',
-    file: '/tiles/01.jpg',
+    // Rendered by DeepZoomLayer (public/deep-map/), not a flat file like
+    // the other zones — no `file` field needed here.
     x: 0,
     y: 0,
-    width: UNIT * 2,
-    height: UNIT * 2,
+    width: MAIN_WIDTH,
+    height: MAIN_HEIGHT,
     accent: ['#3b5470', '#0e1a26'],
   },
   {
@@ -107,7 +114,7 @@ export const ZONES = [
     name: 'Ghețar',
     file: '/tiles/09.jpg',
     x: 0,
-    y: UNIT * 2,
+    y: MAIN_HEIGHT,
     width: UNIT,
     height: UNIT,
     accent: ['#6f8fa8', '#1c2933'],
@@ -118,7 +125,7 @@ export const ZONES = [
     name: 'Râu înghețat',
     file: '/tiles/05.jpg',
     x: UNIT,
-    y: UNIT * 2,
+    y: MAIN_HEIGHT,
     width: UNIT,
     height: UNIT,
     accent: ['#3a5568', '#0e1920'],
@@ -129,7 +136,7 @@ export const ZONES = [
     name: 'Crater uriaș',
     file: '/tiles/06.jpg',
     x: UNIT * 2,
-    y: UNIT * 2,
+    y: MAIN_HEIGHT,
     width: UNIT,
     height: UNIT,
     accent: ['#4a4a52', '#16161c'],

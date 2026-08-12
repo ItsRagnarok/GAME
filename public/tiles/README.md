@@ -1,11 +1,11 @@
 # Imagini de teren
 
-`01.jpg` nu mai e folosit direct pe hartă — hub-ul principal se randează
-acum ca piramidă de tile-uri din `public/deep-map/` (vezi rădăcina
-repo-ului: `DEEP_ZOOM.md`). Fișierul a rămas doar ca sursă placeholder
-pentru acea piramidă.
+Harta principală nu mai are un `01.jpg` aici — se randează ca piramidă
+de tile-uri din `public/deep-map/`, generată din
+`assets/source-maps/harta_upscaled_x4.jpg` (vezi `DEEP_ZOOM.md` în
+rădăcina repo-ului).
 
-Celelalte 9 zone încă folosesc câte o imagine plată, ca înainte:
+Celelalte 9 zone folosesc câte o imagine plată, ca înainte:
 
 | Fișier   | Zonă                             |
 | -------- | --------------------------------- |

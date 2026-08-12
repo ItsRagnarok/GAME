@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ZONES, WORLD_WIDTH, WORLD_HEIGHT, findZoneAt } from '../config/worldConfig';
+import { ZONES, MAIN_ZONE, WORLD_WIDTH, WORLD_HEIGHT, findZoneAt } from '../config/worldConfig';
 import { useWorldCamera } from '../hooks/useWorldCamera';
 import { TerrainTile } from './TerrainTile';
 import { DeepZoomLayer } from './DeepZoomLayer';
@@ -53,15 +53,14 @@ export function WorldMap() {
         )}
         {/* Main hub renders as a tile pyramid (see public/deep-map + scripts/
             generate_deep_zoom.py) instead of one flat image, so it stays
-            sharp at any zoom. Currently built from tiles/01.jpg as a
-            placeholder — swap in a much larger single seamless source image
-            and re-run the script for real quality. */}
+            sharp at any zoom instead of one fixed-resolution <img> stretching
+            blurrily across the whole hub. */}
         <DeepZoomLayer
           baseUrl="/deep-map"
-          worldX={0}
-          worldY={0}
-          worldWidth={4000}
-          worldHeight={4000}
+          worldX={MAIN_ZONE.x}
+          worldY={MAIN_ZONE.y}
+          worldWidth={MAIN_ZONE.width}
+          worldHeight={MAIN_ZONE.height}
           cameraRef={cameraRef}
           viewportRef={viewportRef}
         />

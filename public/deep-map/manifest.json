@@ -1,8 +1,8 @@
 {
   "tileSize": 256,
-  "levels": 4,
-  "nativeWidth": 1536,
-  "nativeHeight": 1024,
+  "levels": 6,
+  "nativeWidth": 6144,
+  "nativeHeight": 4096,
   "levelSizes": [
     [
       192,
@@ -19,6 +19,14 @@
     [
       1536,
       1024
+    ],
+    [
+      3072,
+      2048
+    ],
+    [
+      6144,
+      4096
     ]
   ]
 }
