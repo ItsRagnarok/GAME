@@ -30,7 +30,7 @@ export function Hud({ cameraRef }) {
   }, [cameraRef]);
 
   return (
-    <div className="pointer-events-none absolute bottom-4 left-4 select-none font-mono text-[11px] tracking-wide text-white/40">
+    <div className="frost-panel pointer-events-none absolute bottom-4 left-4 hidden select-none rounded-md px-2.5 py-1.5 frost-label text-[10px] text-white/45 sm:block">
       <div>
         ZOOM <span ref={zoomLabelRef}>70%</span>
       </div>

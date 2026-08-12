@@ -1,4 +1,5 @@
 import { BUILDING_TYPES } from '../config/buildings';
+import { BUILDING_ICONS } from '../config/buildingIcons';
 
 export function BuildingLayer({ buildings }) {
   return (
@@ -7,6 +8,7 @@ export function BuildingLayer({ buildings }) {
         const def = BUILDING_TYPES[b.type];
         const size = 160;
         const underConstruction = b.status === 'building';
+        const FallbackIcon = BUILDING_ICONS[b.type];
 
         return (
           <div
@@ -14,9 +16,17 @@ export function BuildingLayer({ buildings }) {
             className="absolute flex flex-col items-center"
             style={{ left: b.x - size / 2, top: b.y - size / 2, width: size }}
           >
+            {/* Ground-contact shadow shared by every building so they all
+                read as sitting on the same surface, regardless of each
+                sprite's own (mismatched) source lighting. */}
+            <div
+              className="absolute rounded-full bg-black/45 blur-md"
+              style={{ width: size * 0.62, height: size * 0.18, top: size * 0.66 }}
+            />
+
             {def.image ? (
               <div
-                className="relative flex h-[160px] w-full items-center justify-center"
+                className="relative flex h-[160px] w-full items-center justify-center transition-opacity duration-700"
                 style={{ opacity: underConstruction ? 0.55 : 1 }}
               >
                 <img
@@ -32,26 +42,25 @@ export function BuildingLayer({ buildings }) {
                     maskImage: 'radial-gradient(circle, black 55%, transparent 85%)',
                     WebkitMaskImage: 'radial-gradient(circle, black 55%, transparent 85%)',
                     filter: underConstruction
-                      ? 'grayscale(0.4) drop-shadow(0 0 10px rgba(0,0,0,0.5))'
-                      : 'drop-shadow(0 0 14px rgba(0,0,0,0.55))',
+                      ? 'grayscale(0.5) saturate(0.9) contrast(1.05) drop-shadow(0 0 10px rgba(0,0,0,0.5))'
+                      : 'saturate(0.9) contrast(1.05) drop-shadow(0 0 14px rgba(0,0,0,0.55))',
                   }}
                 />
               </div>
             ) : (
               <div
-                className={`flex h-[160px] w-full items-center justify-center rounded-lg border text-4xl backdrop-blur-sm ${
-                  underConstruction
-                    ? 'border-dashed border-white/30 bg-white/5 opacity-60'
-                    : 'border-white/20 bg-black/30'
+                className={`frost-panel relative flex h-[160px] w-full items-center justify-center rounded-lg ${
+                  underConstruction ? 'opacity-60' : ''
                 }`}
+                style={{ borderStyle: underConstruction ? 'dashed' : 'solid' }}
               >
-                {def.icon}
+                {FallbackIcon ? <FallbackIcon width={40} height={40} className="text-orange-200/80" /> : null}
               </div>
             )}
             {underConstruction && (
-              <div className="mt-1 h-1 w-20 overflow-hidden rounded-full bg-black/40">
+              <div className="frost-panel mt-1 h-1.5 w-20 overflow-hidden rounded-full border-0">
                 <div
-                  className="h-full bg-orange-400 transition-all"
+                  className="h-full bg-gradient-to-r from-orange-500 to-orange-300 transition-all"
                   style={{ width: `${Math.round((b.progress / def.buildTicks) * 100)}%` }}
                 />
               </div>

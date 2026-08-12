@@ -1,5 +1,6 @@
 import { ZONES } from '../../world/config/worldConfig';
 import { sendExpedition, EXPEDITION_WOOD_COST } from '../logic/simulation';
+import { IconWood } from './icons';
 
 export function ExpeditionPanel({ zoneId, game, onClose }) {
   const zone = ZONES.find((z) => z.id === zoneId);
@@ -14,21 +15,26 @@ export function ExpeditionPanel({ zoneId, game, onClose }) {
       data-game-ui
     >
       <div
-        className="w-72 rounded-xl border border-white/10 bg-neutral-900/95 p-4 text-sm text-white/90 shadow-2xl"
+        className="frost-panel w-72 rounded-xl p-4 text-sm text-white/90"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="mb-1 font-semibold">
+        <div className="frost-label mb-1 text-orange-200/80">
           {zone.order} · {zone.name}
         </div>
 
         {!exp && (
           <>
             <p className="mb-3 text-white/50">
-              Trimite o echipă de cercetași. Durează câteva ture, cost {EXPEDITION_WOOD_COST}🪵.
+              Trimite o echipă de cercetași. Durează câteva ture, cost{' '}
+              <span className="inline-flex items-center gap-1 text-white/70">
+                {EXPEDITION_WOOD_COST}
+                <IconWood width={12} height={12} />
+              </span>
+              .
             </p>
             <button
               type="button"
-              className="w-full rounded-lg bg-orange-500/80 py-2 font-medium transition-colors hover:bg-orange-500 disabled:cursor-not-allowed disabled:opacity-30"
+              className="w-full rounded-lg bg-gradient-to-b from-orange-500 to-orange-600 py-2 font-medium text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.25)] transition-all active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-30"
               disabled={game.resources.wood < EXPEDITION_WOOD_COST}
               onClick={() => sendExpedition(zoneId)}
             >

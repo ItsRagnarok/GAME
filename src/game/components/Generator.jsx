@@ -35,6 +35,12 @@ export function Generator({ fueled }) {
             background: fueled ? 'rgba(255,140,20,0.35)' : 'rgba(120,140,160,0.12)',
           }}
         />
+        {/* Same ground-contact shadow used under every other building, so
+            the Generator sits on the same visual "floor" as the rest. */}
+        <div
+          className="absolute rounded-full bg-black/45 blur-md"
+          style={{ left: '50%', top: '78%', width: size * 0.5, height: size * 0.14, transform: 'translate(-50%, -50%)' }}
+        />
         <img
           src="/generator/generator.webp"
           alt="Generator"
@@ -48,8 +54,8 @@ export function Generator({ fueled }) {
             maskImage: 'radial-gradient(circle, black 58%, transparent 88%)',
             WebkitMaskImage: 'radial-gradient(circle, black 58%, transparent 88%)',
             filter: fueled
-              ? 'drop-shadow(0 0 26px rgba(255,140,20,0.55)) saturate(1.15) brightness(1.05)'
-              : 'drop-shadow(0 0 14px rgba(0,0,0,0.5)) saturate(0.85) brightness(0.8)',
+              ? 'drop-shadow(0 0 26px rgba(255,140,20,0.55)) saturate(1.05) contrast(1.05) brightness(1.02)'
+              : 'drop-shadow(0 0 14px rgba(0,0,0,0.5)) saturate(0.85) contrast(1.05) brightness(0.82)',
           }}
         />
       </div>

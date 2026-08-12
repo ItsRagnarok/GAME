@@ -1,16 +1,19 @@
 import { BUILDING_TYPES } from '../config/buildings';
+import { BUILDING_ICONS } from '../config/buildingIcons';
+import { IconCoal, IconWood } from './icons';
 
-const COST_ICONS = { coal: '⛏️', wood: '🪵' };
+const COST_ICONS = { coal: IconCoal, wood: IconWood };
 
 export function BuildMenu({ selected, onSelect, resources }) {
   return (
     <div
       data-game-ui
-      className="absolute bottom-4 left-1/2 flex -translate-x-1/2 items-center gap-2 rounded-xl border border-white/10 bg-black/40 p-2 backdrop-blur-sm"
+      className="frost-panel absolute bottom-4 left-1/2 flex max-w-[94vw] -translate-x-1/2 items-center gap-1 overflow-x-auto rounded-xl p-2"
     >
       {Object.values(BUILDING_TYPES).map((def) => {
         const affordable = Object.entries(def.cost).every(([key, amount]) => (resources[key] || 0) >= amount);
         const isSelected = selected === def.id;
+        const FallbackIcon = BUILDING_ICONS[def.id];
 
         return (
           <button
@@ -18,8 +21,8 @@ export function BuildMenu({ selected, onSelect, resources }) {
             type="button"
             disabled={!affordable}
             onClick={() => onSelect(isSelected ? null : def.id)}
-            className={`flex flex-col items-center rounded-lg px-3 py-2 text-xs transition-colors ${
-              isSelected ? 'bg-orange-500/30 ring-1 ring-orange-300' : 'hover:bg-white/10'
+            className={`flex flex-shrink-0 flex-col items-center rounded-lg px-3 py-2 text-xs transition-all active:scale-95 ${
+              isSelected ? 'bg-orange-500/25 ring-1 ring-orange-300/70' : 'hover:bg-white/[0.06]'
             } ${!affordable ? 'opacity-30' : ''}`}
           >
             {def.image ? (
@@ -28,21 +31,33 @@ export function BuildMenu({ selected, onSelect, resources }) {
                 alt={def.name}
                 draggable={false}
                 className="h-8 w-8 select-none rounded object-cover"
+                style={{ filter: 'saturate(0.9) contrast(1.05)' }}
               />
             ) : (
-              <span className="text-2xl">{def.icon}</span>
+              <span className="flex h-8 w-8 items-center justify-center text-orange-200/80">
+                {FallbackIcon ? <FallbackIcon width={22} height={22} /> : null}
+              </span>
             )}
-            <span className="mt-1 whitespace-nowrap text-white/70">{def.name}</span>
-            <span className="text-[10px] text-white/40">
-              {Object.entries(def.cost)
-                .map(([key, amount]) => `${amount}${COST_ICONS[key]}`)
-                .join(' ')}
+            <span className="frost-label mt-1.5 whitespace-nowrap text-[10px] text-white/70">{def.name}</span>
+            <span className="mt-0.5 flex items-center gap-1.5 text-[10px] text-white/40">
+              {Object.entries(def.cost).map(([key, amount]) => {
+                const Icon = COST_ICONS[key];
+                return (
+                  <span key={key} className="flex items-center gap-0.5">
+                    <Icon width={11} height={11} />
+                    {amount}
+                  </span>
+                );
+              })}
             </span>
           </button>
         );
       })}
       {selected && (
-        <div className="ml-2 max-w-[8rem] text-[11px] leading-tight text-orange-300/80">
+        <div className="frost-divider mx-1" />
+      )}
+      {selected && (
+        <div className="max-w-[8rem] px-2 text-[11px] leading-tight text-orange-300/80">
           Click pe hartă, lângă generator
         </div>
       )}
