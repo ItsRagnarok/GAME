@@ -23,6 +23,7 @@ const KEYBOARD_SPEED = 900; // world units / second at zoom = 1
 const WHEEL_SENSITIVITY = 0.0018;
 const FRICTION = 0.9;
 const MIN_VELOCITY = 2;
+const TAP_MOVE_THRESHOLD = 6; // px of drag before a pointer-up stops counting as a tap
 
 function clamp(value, min, max) {
   return Math.min(max, Math.max(min, value));
@@ -34,10 +35,16 @@ function clamp(value, min, max) {
  * Applies transforms directly to the DOM each frame instead of going
  * through React state, so panning/zooming stays smooth regardless of
  * render cost elsewhere in the tree.
+ *
+ * `onTap(worldX, worldY)` fires on a clean click/tap — a pointer that
+ * went down and up without turning into a drag or a pinch — so callers
+ * can place buildings / open panels without fighting the pan gesture.
  */
-export function useWorldCamera() {
+export function useWorldCamera({ onTap } = {}) {
   const viewportRef = useRef(null);
   const worldRef = useRef(null);
+  const onTapRef = useRef(onTap);
+  onTapRef.current = onTap;
 
   const cameraRef = useRef({
     x: DEFAULT_CAMERA.x,
@@ -58,6 +65,7 @@ export function useWorldCamera() {
     const drag = { active: false, pointerId: null, lastX: 0, lastY: 0 };
     const pinch = { active: false, startDist: 0, startZoom: 1 };
     const pointers = new Map();
+    const gesture = { moved: false, pinched: false };
 
     let rafId = null;
     let lastTime = performance.now();
@@ -155,7 +163,12 @@ export function useWorldCamera() {
       pressedKeys.delete(e.key.toLowerCase());
     }
 
+    function isGameUiTarget(e) {
+      return e.target.closest?.('[data-game-ui]') != null;
+    }
+
     function onWheel(e) {
+      if (isGameUiTarget(e)) return;
       e.preventDefault();
       const rect = viewport.getBoundingClientRect();
       const factor = Math.exp(-e.deltaY * WHEEL_SENSITIVITY);
@@ -163,6 +176,7 @@ export function useWorldCamera() {
     }
 
     function onPointerDown(e) {
+      if (isGameUiTarget(e)) return;
       viewport.setPointerCapture(e.pointerId);
       pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
 
@@ -173,8 +187,11 @@ export function useWorldCamera() {
         drag.lastY = e.clientY;
         velocity.x = 0;
         velocity.y = 0;
+        gesture.moved = false;
+        gesture.pinched = false;
       } else if (pointers.size === 2) {
         drag.active = false;
+        gesture.pinched = true;
         const pts = [...pointers.values()];
         pinch.active = true;
         pinch.startDist = Math.hypot(pts[0].x - pts[1].x, pts[0].y - pts[1].y) || 1;
@@ -200,6 +217,9 @@ export function useWorldCamera() {
       if (drag.active && e.pointerId === drag.pointerId) {
         const dx = e.clientX - drag.lastX;
         const dy = e.clientY - drag.lastY;
+        if (Math.abs(dx) > TAP_MOVE_THRESHOLD || Math.abs(dy) > TAP_MOVE_THRESHOLD) {
+          gesture.moved = true;
+        }
         camera.x -= dx / camera.zoom;
         camera.y -= dy / camera.zoom;
         velocity.x = -dx / camera.zoom / (1 / 60);
@@ -212,6 +232,9 @@ export function useWorldCamera() {
     }
 
     function endPointer(e) {
+      const wasCleanTap =
+        pointers.size === 1 && e.pointerId === drag.pointerId && !gesture.moved && !gesture.pinched;
+
       pointers.delete(e.pointerId);
       if (e.pointerId === drag.pointerId) {
         drag.active = false;
@@ -227,6 +250,13 @@ export function useWorldCamera() {
         drag.pointerId = id;
         drag.lastX = remaining.x;
         drag.lastY = remaining.y;
+      }
+
+      if (wasCleanTap && onTapRef.current) {
+        const rect = viewport.getBoundingClientRect();
+        const worldX = camera.x + (e.clientX - rect.left - size.w / 2) / camera.zoom;
+        const worldY = camera.y + (e.clientY - rect.top - size.h / 2) / camera.zoom;
+        onTapRef.current(worldX, worldY);
       }
     }
 

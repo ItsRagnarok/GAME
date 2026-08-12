@@ -1,0 +1,48 @@
+import { GENERATOR_POSITION } from '../../world/config/worldConfig';
+
+/**
+ * The Generator: the heart of the hub, same role as in Frostpunk. Shows
+ * a warmth ring so it's visually obvious why buildings cluster around
+ * it, and dims when out of coal.
+ */
+export function Generator({ fueled }) {
+  const size = 260;
+  const warmthRadius = 1650;
+
+  return (
+    <>
+      <div
+        className="pointer-events-none absolute rounded-full border transition-colors duration-1000"
+        style={{
+          left: GENERATOR_POSITION.x - warmthRadius,
+          top: GENERATOR_POSITION.y - warmthRadius,
+          width: warmthRadius * 2,
+          height: warmthRadius * 2,
+          borderColor: fueled ? 'rgba(255,170,80,0.18)' : 'rgba(255,255,255,0.06)',
+          background: fueled
+            ? 'radial-gradient(circle, rgba(255,140,20,0.08) 0%, transparent 70%)'
+            : 'transparent',
+        }}
+      />
+      <div
+        className="absolute"
+        style={{ left: GENERATOR_POSITION.x - size / 2, top: GENERATOR_POSITION.y - size / 2, width: size, height: size }}
+      >
+        <div
+          className="absolute inset-0 rounded-full blur-2xl transition-opacity duration-1000"
+          style={{
+            transform: 'scale(2.4)',
+            background: fueled ? 'rgba(255,140,20,0.35)' : 'rgba(120,140,160,0.12)',
+          }}
+        />
+        <div
+          className={`absolute inset-0 flex items-center justify-center rounded-full border-4 bg-neutral-900 text-6xl transition-colors duration-1000 ${
+            fueled ? 'border-orange-300/70 shadow-[0_0_60px_20px_rgba(255,140,20,0.35)]' : 'border-white/15'
+          }`}
+        >
+          🏭
+        </div>
+      </div>
+    </>
+  );
+}

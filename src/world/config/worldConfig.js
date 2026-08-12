@@ -13,7 +13,7 @@ export const WORLD_WIDTH = UNIT * 5; // 10000
 export const WORLD_HEIGHT = UNIT * 3; // 6000
 
 export const MIN_ZOOM = 0.3;
-export const MAX_ZOOM = 2.4;
+export const MAX_ZOOM = 3.2;
 export const DEFAULT_ZOOM = 0.6;
 
 // Camera starts centered on the main hub, not the geometric world center,
@@ -135,3 +135,18 @@ export const ZONES = [
     accent: ['#4a4a52', '#16161c'],
   },
 ];
+
+export const MAIN_ZONE = ZONES.find((z) => z.id === 'main');
+
+// The Generator sits at the heart of the main hub — everything you build
+// radiates out from here, same as in Frostpunk.
+export const GENERATOR_POSITION = {
+  x: MAIN_ZONE.x + MAIN_ZONE.width / 2,
+  y: MAIN_ZONE.y + MAIN_ZONE.height / 2,
+};
+
+export function findZoneAt(x, y) {
+  return (
+    ZONES.find((z) => x >= z.x && x <= z.x + z.width && y >= z.y && y <= z.y + z.height) ?? null
+  );
+}
