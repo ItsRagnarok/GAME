@@ -35,13 +35,23 @@ export function Generator({ fueled }) {
             background: fueled ? 'rgba(255,140,20,0.35)' : 'rgba(120,140,160,0.12)',
           }}
         />
-        <div
-          className={`absolute inset-0 flex items-center justify-center rounded-full border-4 bg-neutral-900 text-6xl transition-colors duration-1000 ${
-            fueled ? 'border-orange-300/70 shadow-[0_0_60px_20px_rgba(255,140,20,0.35)]' : 'border-white/15'
-          }`}
-        >
-          🏭
-        </div>
+        <img
+          src="/generator/generator.webp"
+          alt="Generator"
+          draggable={false}
+          className="absolute select-none transition-[filter] duration-1000"
+          style={{
+            left: '50%',
+            top: '50%',
+            width: size * 1.35,
+            transform: 'translate(-50%, -50%)',
+            maskImage: 'radial-gradient(circle, black 58%, transparent 88%)',
+            WebkitMaskImage: 'radial-gradient(circle, black 58%, transparent 88%)',
+            filter: fueled
+              ? 'drop-shadow(0 0 26px rgba(255,140,20,0.55)) saturate(1.15) brightness(1.05)'
+              : 'drop-shadow(0 0 14px rgba(0,0,0,0.5)) saturate(0.85) brightness(0.8)',
+          }}
+        />
       </div>
     </>
   );
