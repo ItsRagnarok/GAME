@@ -40,8 +40,8 @@ export function BuildingLayer({ buildings }) {
                     top: '50%',
                     width: size * 1.5,
                     transform: 'translate(-50%, -50%)',
-                    maskImage: 'radial-gradient(circle, black 55%, transparent 85%)',
-                    WebkitMaskImage: 'radial-gradient(circle, black 55%, transparent 85%)',
+                    maskImage: 'radial-gradient(ellipse, black 50%, transparent 80%)',
+                    WebkitMaskImage: 'radial-gradient(ellipse, black 50%, transparent 80%)',
                     filter: underConstruction
                       ? 'grayscale(0.5) saturate(0.9) contrast(1.05) drop-shadow(0 0 10px rgba(0,0,0,0.5))'
                       : 'saturate(0.9) contrast(1.05) drop-shadow(0 0 14px rgba(0,0,0,0.55))',

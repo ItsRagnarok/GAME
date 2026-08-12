@@ -28,7 +28,7 @@ export function TerrainTile({ zone }) {
           draggable={false}
           onError={() => setFailed(true)}
           className="h-full w-full object-cover select-none"
-          style={{ filter: 'saturate(0.72) brightness(0.62) contrast(1.05) sepia(0.08) hue-rotate(180deg)' }}
+          style={{ filter: 'saturate(0.8) brightness(0.68) contrast(1.08)' }}
         />
       ) : (
         <div
@@ -42,6 +42,11 @@ export function TerrainTile({ zone }) {
           </span>
         </div>
       )}
+
+      {/* Cold cast so every tile shares one light temperature instead of
+          each photo's own white balance — mix-blend keeps the underlying
+          detail instead of flattening it the way hue-rotate did. */}
+      <div className="pointer-events-none absolute inset-0 bg-[#2b4a6e] mix-blend-color opacity-30" />
 
       {/* soft inner shadow so every tile blends into its neighbors instead
           of reading as a hard-edged image */}
